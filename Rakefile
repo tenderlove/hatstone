@@ -3,9 +3,6 @@ def each_node node, &block
   node["inner"]&.each { |n| each_node(n, &block) }
 end
 
-def find_comment node
-end
-
 def find_enums tree, &block
   if tree["kind"] == "EnumDecl"
     name = tree["name"]
