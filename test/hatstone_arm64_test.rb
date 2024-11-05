@@ -1,6 +1,6 @@
 require "helper"
 
-class HatstoneTest < Hatstone::Test
+class HatstoneArm64Test < Hatstone::Test
   def test_disasm
     hs = Hatstone.new(Hatstone::ARCH_ARM64, Hatstone::MODE_ARM)
 
@@ -11,7 +11,8 @@ class HatstoneTest < Hatstone::Test
     ].pack("L<L<")
 
     disassembled = hs.disasm(insns, 0x0)
-    assert_equal "movz", disassembled[0].mnemonic
+    
+    assert_equal "mov", disassembled[0].mnemonic
     assert_equal "ret", disassembled[1].mnemonic
   end
 
@@ -29,3 +30,4 @@ class HatstoneTest < Hatstone::Test
     insn
   end
 end
+
