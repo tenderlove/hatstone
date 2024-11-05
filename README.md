@@ -20,6 +20,8 @@ you can be assured that if you can install this gem, you can use this gem (hopef
 Make sure you have Capstone installed.  On macOS this is `brew install capstone`.
 Then install this gem via the normal method `gem install hatstone`.
 
+Note: RISCV support is only available in Capstone version 5 or later.
+
 ## Example Usage
 
 In this example we'll assemble some simple ARM64 instructions and then use
@@ -51,6 +53,46 @@ insns = [
 
 # Now disassemble the instructions with Hatstone
 hs = Hatstone.new(Hatstone::ARCH_ARM64, Hatstone::MODE_ARM)
+
+hs.disasm(insns, 0x0).each do |insn|
+  puts "%#05x %s %s" % [insn.address, insn.mnemonic, insn.op_str]
+end
+```
+Another example, this time for RISCV64
+
+```ruby
+require 'hatstone'
+
+def lui reg, imm
+  insn = 0b00000000000000000000_00000_0110111 
+  insn |= (reg << 7)  # Set destination register 
+  insn |= (imm & 0xFFFFF) << 12  # Set 20-bit immediate
+  insn
+end
+
+def auipc reg, imm
+  insn = 0b00000000000000000000_00000_0010111  # auipc base
+  insn |= (reg << 7)  # Set destination register
+  insn |= (imm & 0xFFFFF) << 12  # Set 20-bit immediate
+  insn
+end
+
+def addi reg, imm
+  insn = 0b00000000000000000000_00000_0010011  # addi base
+  insn |= (reg << 7)  # Set destination register
+  insn |= (reg << 15)  # Set source register
+  insn |= (imm & 0xFFF) << 20  # Set 12-bit immediate
+  insn
+end
+
+insns = [
+  lui(17, 64), # lui a7,64
+  lui(10, 1),  # lui a0,1
+  auipc(0, 0), # auipc a0,0x0
+  addi(0, 36), # addi a0,a0,36
+].pack("L<*")
+
+hs = Hatstone.new(Hatstone::ARCH_RISCV, Hatstone::MODE_RISCV64)
 
 hs.disasm(insns, 0x0).each do |insn|
   puts "%#05x %s %s" % [insn.address, insn.mnemonic, insn.op_str]

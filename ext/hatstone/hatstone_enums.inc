@@ -92,3 +92,13 @@ rb_define_const(klass, "ERR_SKIPDATA", INT2NUM(CS_ERR_SKIPDATA));
 rb_define_const(klass, "ERR_X86_ATT", INT2NUM(CS_ERR_X86_ATT));
 rb_define_const(klass, "ERR_X86_INTEL", INT2NUM(CS_ERR_X86_INTEL));
 rb_define_const(klass, "ERR_X86_MASM", INT2NUM(CS_ERR_X86_MASM));
+
+#ifdef CS_API_MAJOR
+#if CS_API_MAJOR >= 5
+rb_define_const(klass, "ARCH_RISCV", INT2NUM(CS_ARCH_RISCV));
+rb_define_const(klass, "MODE_RISCV32", INT2NUM(CS_MODE_RISCV32));
+rb_define_const(klass, "MODE_RISCV64", INT2NUM(CS_MODE_RISCV64));
+rb_define_const(klass, "MODE_RISCVC", INT2NUM(CS_MODE_RISCVC));
+#endif
+#endif
+
