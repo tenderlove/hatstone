@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "hatstone"
-  spec.version       = "1.0.0"
+  spec.version       = "1.0.1"
   spec.authors       = ["Aaron Patterson"]
   spec.email         = ["tenderlove@ruby-lang.org"]
 
